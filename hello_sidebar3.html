@@ -2,7 +2,7 @@
 <html ng-app="HWBox">
 	<head>
 		<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
-		<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/paper/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.1/paper/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="http://jasny.github.io/bootstrap/dist/css/jasny-bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="http://jasny.github.io/bootstrap/examples/navbar-offcanvas/navbar-offcanvas.css">
 
@@ -80,7 +80,7 @@
 			
 			<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="hw in hwCtrl.hws">
-			<div class="panel panel-default" ng-class="{ panel-success : hw.hwDone, panel-danger : !hw.hwDone}">
+			<div class="panel panel-default" ng-class="{ 'panel-success' : hw.hwDone, 'panel-danger' : !hw.hwDone}">
 		 		<div class="panel-heading">
 					<span class="panel-title">{{hw.hwName}} / {{hw.objectId}}</span>
 					<span ng-show="hw.hwDone" class="label label-success pull-right"><span class="glyphicon glyphicon-ok"></span> DONE!</span>
@@ -94,7 +94,7 @@
 		 	 			<button type="button" class="btn btn-danger btn-sm" ng-show="hw.hwDone" ng-click="hwCtrl.markAs(hw, false)"><span class="glyphicon glyphicon-remove"></span> Mark as Undone</button>
 		 	 			<button type="button" class="btn btn-success btn-sm" ng-show="!hw.hwDone" ng-click="hwCtrl.markAs(hw, true)"><span class="glyphicon glyphicon-ok"></span> Mark as Done</button>
 		 	 			<span class="btn-group" role="group" aria-label="...">
-						  <button type="button" class="btn btn-default btn-sm" ng-click="tab.setTab(4)><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+						  <button type="button" class="btn btn-default btn-sm" ng-click="tab.setTab(4)"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
 						  <button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Delete</button>
 						</span>
 		 	 		</p>
