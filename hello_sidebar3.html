@@ -143,7 +143,7 @@
 			  
 			</div>
 			
-			<div class="alert alert-success" role="alert" ng-show="addHWCtrl.added">
+			<div class="alert alert-success" role="alert" ng-show="addHWCtrl.isSuccessful">
 			  <a href="#" class="alert-link">Homework "<strong>{{addHWCtrl.lastAddedName}}</strong>{{"\" is added successfully!"}}</a>
 			  
 			</div>
@@ -163,6 +163,7 @@
 					<p><strong>Name: </strong>{{ addHWCtrl.newHW.hwName }}</p>
 					<p><strong>Description: </strong>{{ addHWCtrl.newHW.hwDescription }}</p>
 					<p><strong>Due Date: </strong>{{ addHWCtrl.newHW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
+					<!-- <p>LÖLÖL {{addHWCtrl.isSuccessful }} -->
 				</div>
 			</div>
 			
@@ -236,13 +237,12 @@
 		<!-- END OF EDIT HOMEWORK-->
 	
 		<!-- DENEME -->
-		<div class="col-sm-12 " ng-show="tab.isSet(5)" ng-controller="HWController as hwCtrl" >
+		<div class="col-sm-12 " ng-show="tab.isSet(5)" ng-controller="denemeController as dCtrl" >
 		
 			<div class="jumbotron">
 				<h1> deneme</h1>
-				
-				<p>A Brand New HW Management System...</p>
-			
+				<!-- <button class="btn btn-primary" ng-click="dCtrl.control()">Deneme</button>
+				<p>{{ dCtrl.HW }} </p> -->
 			</div>
 		</div>
 		

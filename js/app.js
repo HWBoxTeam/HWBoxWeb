@@ -1,7 +1,7 @@
 (function(){
-	var app = angular.module('HWBox', ['parse', 'classes']);
+	var app = angular.module('HWBox', ['parse']);
 	
-	function Homework() {
+	/*function Homework() {
 		this.hwName = "Unknown";
 		this.hwDescription = "Unknown";
 		this.hwDone = false;
@@ -18,13 +18,18 @@
 			this.hwDueDate = hwDueDate;
 			this.objectId = objectId;
 		};
-		
-		//{ hwName: "HW3", hwDescription: "Registration System", hwDone: false, objectId: 55, dueDate: 1288323623006 },
-	}
+			//{ hwName: "HW3", hwDescription: "Registration System", hwDone: false, objectId: 55, dueDate: 1288323623006 },
+	}	*/
+
 
 	app.controller("HWController", ['$scope', '$http', function ($scope, $http) {
 		
-		this.hws = hwObjects;
+		var hws = Homeworks.data;
+		Homeworks.refresh();
+		
+		setInterval(function(){
+			alert("PÖÇ " + Homeworks.data + " - " + hws ) ;
+		}, 2000);
 		
 		this.markAs = function(object, done){
 			object.hwDone = (done) ?  true : false;
@@ -45,23 +50,48 @@
 		};
 	});
 	
-	app.controller("addHWController", function(){
+	/*app.controller("addHWController", function(){
 		this.newHW = {};
 		this.newHW.hwDueDate = Date.now();
 		this.added = false;
 		this.lastAddedName = "";
 		
 		this.addHW = function(){
-			this.newHW.objectId = Math.floor((Math.random() * 100)); 
+			//this.newHW.objectId = Math.floor((Math.random() * 100)); 
 			//this.newHW.hwDone = (this.newHW.hwDone == "true") ? true : false;
 			
 			hwObjects.push(this.newHW);
-			this.added = pAddHW(this.newHW); //parse method
-			
+			var testName = pAddHW(this.newHW); //parse method
 			this.lastAddedName = this.newHW.hwName;
 			this.newHW = {};
+			
+			//testObj.fetch();
+			//alert("ç" + testObj.id + testObj.get("hwName"));
+			setInterval(function(){ 
+				alert("ç" + testObj.id + testObj.get("hwName"));
+			
+			}, 5000);
 		};
 		
+	});*/
+	
+	app.controller("addHWController", function(){
+		this.newHW = {};
+		this.newHW.hwDueDate = Date.now();
+		//this.isSuccessful = false;
+		
+		this.addHW = function(){
+			
+			var hw = new Homework();
+		
+			hw.set("hwDone", this.newHW.hwDone);
+			hw.set("hwDescription", this.newHW.hwDescription);
+			hw.set("hwName", this.newHW.hwName);
+			hw.set("hwDueDate", new Date(this.newHW.hwDueDate));
+
+			hw.insert();
+			
+		};
 	});
 	
 	app.controller("editHWController", function(){
@@ -79,13 +109,27 @@
 		};
 	});
 	
-	var hwObjects = [
+	app.controller("denemeController", function(){
+		/*this.HW = {name : "burak"};
+		this.control = function(){
+			
+			console.log("1. " + this.HW.name);
+			this.getHW = function(hw){
+				this.HW = hw;
+			};
+			console.log("2. " + this.HW.name);
+			pGetHW(getHW);
+			console.log("3. " + this.HW.name);		
+		};*/
+	});
+	
+	/*var hwObjects = [
 		//DUMMY DATAS
 		{ hwName: "HW3", hwDescription: "Registration System", hwDone: false, objectId: 55, hwDueDate: 1288323623006 },
 		{ hwName: "HW1", hwDescription: "Student System", hwDone: false, objectId: 49, hwDueDate: 1288345623006 },
 		{ hwName: "HW2", hwDescription: "MovieRentalSystem", hwDone: true, objectId: 51, hwDueDate: 1288327723006 },
 		{ hwName: "Book VII", hwDescription: "Republic", hwDone: true, objectId: 27, hwDueDate: 1288428723006 }
-	];
+	];*/
 	
 	var crsObjects = [
 		//DUMMY DATAS

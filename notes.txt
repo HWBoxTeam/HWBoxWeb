@@ -1,0 +1,50 @@
+Homework
+-----------------------
+insert(): objeyi save() et ve Homeworks'ü refresh() et
+update(): verileri set() et ve objeyi save() et, Homeworks'ü refresh() et
+get(id): STATIC fonksiyon. objectId'yi al ve find() ile Homework objesini bulup instantiate edip return et 
+delete(): objeyi destroy() et, Homeworks.refresh()
+
+Course
+-----------------------
+insert()
+update()
+get(id)
+delete()
+
+Add Homework
+-----------------------
+1. angular module'dan verileri al Homework objesi oluştur
+2. objeyi insert() et
+
+Edit Homework
+-----------------------
+1. 
+
+Delete Homework
+-----------------------
+
+View Homeworks
+-----------------------
+1. 
+
+Homeworks
+-----------------------
+1. refresh(): ParseQuery ile tüm fHomework objelerini find() ile bul ve initialize et
+
+
+Add Course
+-----------------------
+
+Edit Course
+-----------------------
+
+Delete Course
+-----------------------
+
+View Courses
+-----------------------
+
+Courses
+-----------------------
+
