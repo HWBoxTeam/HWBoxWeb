@@ -11,6 +11,7 @@
 	  getDone: function(){ return this.get("hwDone"); },
 	  getDueDate: function(){ return this.get("hwDueDate"); },
 	  insert: function(){
+		
 	  	this.save(null, {
 			  success: function(object) {
 				alert('New object created with objectId = ' + object.id + " " + object.get("hwName"));
@@ -41,21 +42,26 @@
 	this.Homeworks = 
 	{
 		data : [],
-		refresh : function(){
-			
+		refresh : function(callback){
+			var that = this;
 			new Parse.Query(Homework).find({
 				  success: function(results) {
-					alert("Successfully retrieved " + results.length + " scores.");
-					// Do something with the returned Parse.Object values
-					/*for (var i = 0; i < results.length; i++) { 
-					  var object = results[i];
-					  alert(object.id + ' - ' + object.get('playerName'));
-					}*/
-					this.data = results;
-					alert(data + " - " + results + " - " + data[0] + " " + results[0]);
+						alert("Successfully retrieved " + results.length + " scores.");
+						// Do something with the returned Parse.Object values
+						/*for (var i = 0; i < results.length; i++) { 
+						  var object = results[i];
+						  alert(object.id + ' - ' + object.get('playerName'));
+						}*/
+
+						/*results.forEach(function(item){
+							alert(JSON.stringify(item, null, 4));
+						});*/
+					
+						that.data = results;
+					  callback();
 				  },
 				  error: function(error) {
-					alert("Error: " + error.code + " " + error.message);
+						alert("Error: " + error.code + " " + error.message);
 				  }
 			});
 		}

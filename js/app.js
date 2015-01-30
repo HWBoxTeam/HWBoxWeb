@@ -24,12 +24,19 @@
 
 	app.controller("HWController", ['$scope', '$http', function ($scope, $http) {
 		
-		var hws = Homeworks.data;
-		Homeworks.refresh();
+		//var that = this;
+		var hws = [];
+
+		Homeworks.refresh(function(){
+				this.hws = Homeworks.data;
+
+			this.hws.forEach(function(item){
+				console.log(JSON.stringify(item, null, 4));
+					});
+	
+		}.bind(this));
 		
-		setInterval(function(){
-			alert("PÖÇ " + Homeworks.data + " - " + hws ) ;
-		}, 2000);
+
 		
 		this.markAs = function(object, done){
 			object.hwDone = (done) ?  true : false;
@@ -78,7 +85,7 @@
 	app.controller("addHWController", function(){
 		this.newHW = {};
 		this.newHW.hwDueDate = Date.now();
-		//this.isSuccessful = false;
+		var isSuccessful = false;
 		
 		this.addHW = function(){
 			
@@ -110,6 +117,15 @@
 	});
 	
 	app.controller("denemeController", function(){
+		var myObject = {};
+
+// create a method on our object
+myObject.someMethod = function () {
+  console.log(this); // myObject
+};
+
+// call our method
+myObject.someMethod();
 		/*this.HW = {name : "burak"};
 		this.control = function(){
 			
