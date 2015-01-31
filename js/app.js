@@ -15,10 +15,26 @@
 		};
 	});
 
+	app.service('connectViewEdit', function() {  
+  	
+  	var currentHW = {};
+  	
+  	return {
+  		set: function(obj){
+  				currentHW = obj;
+  				console.log("set in service called with currentHW: " + JSON.stringify(currentHW))
+  		},
+  		get: function(){
+  				return currentHW;
+  		}
+  	};
+	});
 
 	app.controller("ViewHWController", function ($scope, connectViewEdit) {
 		
 		var hws = [];
+
+		$scope.connectViewEdit = connectViewEdit;
 
 		//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
 		
@@ -38,9 +54,9 @@
 		}.bind(this));*/
 		
 
-		this.sendHWToEdit = function(obj) {
-			//console.log("sendHWToEdit called with currentHW: " + JSON.stringify(currentHW));
-			connectViewEdit.sendHWToEdit(obj);
+		this.set = function(obj) {
+			//console.log("set called with currentHW: " + JSON.stringify(currentHW));
+			connectViewEdit.set(obj);
 		};
 		
 	});
@@ -71,28 +87,19 @@
 		};
 	});
 
-	app.service('connectViewEdit', function() {  
-  	
-  	var currentHW = {};
-  	
-  	return {
-  		sendHWToEdit: function(obj){
-  				currentHW = obj;
-  				console.log("sendHWToEdit in service called with currentHW: " + JSON.stringify(currentHW))
-  		},
-  		returnHWToEdit: function(){
-  				return currentHW;
-  		}
-  	};
-	});
+	
 	
 	app.controller("editHWController", function($scope, connectViewEdit){
 		
-		var hw = connectViewEdit.returnHWToEdit();
+		$scope.connectViewEdit = connectViewEdit;
 
-		$scope.$watch('connectViewEdit.currentHW', function (newVal, oldVal, scope) {
+		//var hw = connectViewEdit.get();
+
+		this.HW = {};
+		
+	/*	$scope.$watch('connectViewEdit.currentHW', function (newVal, oldVal, scope) {
 			  if(newVal) { 
-			    scope.hw = connectViewEdit.returnHWToEdit();
+			    scope.hw = connectViewEdit.get();
 					console.info(JSON.stringify(hw));
 
 					this.HW = {};
@@ -101,7 +108,7 @@
 					this.HW.hwDueDate = hw.getDueDate();
 					this.HW.hwDone = hw.isDone();
 			  }
-		});
+		});*/
 
 		this.edited = false;
 		this.lastEditedName = "";

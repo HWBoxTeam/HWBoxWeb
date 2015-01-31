@@ -207,15 +207,15 @@
 			<!-- novalidate is for disabling default browser HTML5 validation -->
 			<form name="editHWForm"  ng-submit="editHWCtrl.editHW()" novalidate> 
 				<div class="form-group">
-					<input type="text" ng-model="editHWCtrl.HW.hwName" class="form-control" placeholder="Homework Name" required />
+					<input type="text" ng-model="editHWCtrl.HW.hwName" class="form-control" placeholder="{{editHWCtrl.connectViewEdit.get().getName()}}" required />
 				</div>
 				
 				<div class="form-group">
-					<textarea class="form-control" ng-model="editHWCtrl.HW.hwDescription" placeholder="Homework description"></textarea>
+					<textarea class="form-control" ng-model="editHWCtrl.HW.hwDescription" placeholder="{{editHWCtrl.connectViewEdit.get().getDescription()}}"></textarea>
 				</div>
 				
 				 <div class="form-group">
-				 	<input type="text" class="form-control" ng-model="editHWCtrl.HW.hwDueDate" placeholder="Due date in UNIX timestamp" required />
+				 	<input type="text" class="form-control" ng-model="editHWCtrl.HW.hwDueDate" placeholder="{{editHWCtrl.connectViewEdit.get().getDueDate()}}" required />
 				 </div>
 				
 				<div class="checkbox">
