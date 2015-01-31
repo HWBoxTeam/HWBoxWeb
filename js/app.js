@@ -20,15 +20,23 @@
 		
 		var hws = [];
 
-		Homeworks.refresh(function(){
-            this.hws = Homeworks.data;
+		//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
+		
+		Homeworks.load(function(){
+      this.hws = Homeworks.data;
 
-			this.hws.forEach(function(item){
+			/*this.hws.forEach(function(item){
 				//console.log(JSON.stringify(item, null, 4));
                 console.log(item.toJSON());
-            });
+            });*/
 	
 		}.bind(this));
+
+		/*Homework.getById("DDMspc3UjI", function(result){
+			Homeworks.data.push(result);
+			console.log(result + " : result from getById");
+		}.bind(this));*/
+		
 
 		this.sendHWToEdit = function(obj) {
 			//console.log("sendHWToEdit called with currentHW: " + JSON.stringify(currentHW));

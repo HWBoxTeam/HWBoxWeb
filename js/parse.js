@@ -24,28 +24,54 @@
 			  }
         });
 	  },
-	  update: function(){},
-	  delete: function(){},
+	  update: function(callback){
+	  	this.save(null, {
+			  success: function(object) {                
+                callback(true, "Homework " + object.get("hwName") + " updated successfully!");
+			  },
+			  error: function(model, error) {
+                callback(false, "Cannot be updated becasue: " + error.msg);
+			  }
+        });
+	  },
+	  delete: function(callback){
+	  	this.destroy(null, {
+			  success: function(object) {                
+                callback(true, "Homework " + object.get("hwName") + " deleted successfully!");
+			  },
+			  error: function(model, error) {
+                callback(false, "Cannot be deleted becasue: " + error.msg);
+			  }
+        });
+	  },
 	  
 	  // Instance properties go in an initialize method
 	  initialize: function (attrs, options) {
 		//this.hwName = "Unknown";
 	  }
-	}, {
+	}, 
+	{
 	  // Class methods
-	  getById: function(id) {
-		
+	  getById: function(id, callback) {
+			new Parse.Query(Homework).equalTo("objectId", id).find({
+				success: function(results){ callback(results[0]); },
+				error: function(error){ console.error("cannot homework getById because: " + error.msg); }
+			});
 	  }
 	});
 
 	this.Homeworks = 
 	{
 		data : [],
-		refresh : function(callback){
+		query: new Parse.Query(Homework), //default query object
+		setQuery: function(queryObj){
+			this.query = queryObj;
+		},
+		load : function(callback){
 			var that = this;
-			new Parse.Query(Homework).find({
+			that.query.find({
 				  success: function(results) {
-						alert("Successfully retrieved " + results.length + " scores.");
+						console.log("Successfully retrieved " + results.length + " homework objects.");
 						/*results.forEach(function(item){
 							alert(JSON.stringify(item, null, 4));
 						});*/
@@ -54,7 +80,7 @@
 					   callback();
 				  },
 				  error: function(error) {
-						alert("Error: " + error.code + " " + error.message);
+						console.log("Error while loading homeworks: " + error.code + " " + error.message);
 				  }
 			});
 		}
@@ -63,7 +89,7 @@
     this.Courses = 
     {
         data: [],
-        refresh: function(callback){
+        load: function(callback){
             var that = this;
             new Parse.Query(Course).find({
                 success: function(results){},
