@@ -1,48 +1,6 @@
 (function(){
 	var app = angular.module('HWBox', ['parse']);
 	
-	/*function Homework() {
-		this.hwName = "Unknown";
-		this.hwDescription = "Unknown";
-		this.hwDone = false;
-		this.hwDueDate = Date.now();
-		this.objectId = 0;
-		
-		this.getInfo = function() {
-			return this.color + ' ' + this.type + ' apple';
-		};
-		this.setData = function(objectId, hwName, hwDescription, hwDone, hwDueDate) {
-			this.hwName = hwName;
-			this.hwDescription = hwDescription;
-			this.hwDone = hwDone;
-			this.hwDueDate = hwDueDate;
-			this.objectId = objectId;
-		};
-			//{ hwName: "HW3", hwDescription: "Registration System", hwDone: false, objectId: 55, dueDate: 1288323623006 },
-	}	*/
-
-
-	app.controller("HWController", ['$scope', '$http', function ($scope, $http) {
-		
-		//var that = this;
-		var hws = [];
-
-		Homeworks.refresh(function(){
-				this.hws = Homeworks.data;
-
-			this.hws.forEach(function(item){
-				console.log(JSON.stringify(item, null, 4));
-					});
-	
-		}.bind(this));
-		
-
-		
-		this.markAs = function(object, done){
-			object.hwDone = (done) ?  true : false;
-		}
-	}]);
-	
 	app.controller("CourseController", function(){
 		this.crss = crsObjects;
 	});
@@ -56,36 +14,35 @@
 			return this.tab === tabIndex;
 		};
 	});
-	
-	/*app.controller("addHWController", function(){
-		this.newHW = {};
-		this.newHW.hwDueDate = Date.now();
-		this.added = false;
-		this.lastAddedName = "";
+
+
+	app.controller("ViewHWController", function ($scope, connectViewEdit) {
 		
-		this.addHW = function(){
-			//this.newHW.objectId = Math.floor((Math.random() * 100)); 
-			//this.newHW.hwDone = (this.newHW.hwDone == "true") ? true : false;
-			
-			hwObjects.push(this.newHW);
-			var testName = pAddHW(this.newHW); //parse method
-			this.lastAddedName = this.newHW.hwName;
-			this.newHW = {};
-			
-			//testObj.fetch();
-			//alert("ç" + testObj.id + testObj.get("hwName"));
-			setInterval(function(){ 
-				alert("ç" + testObj.id + testObj.get("hwName"));
-			
-			}, 5000);
+		var hws = [];
+
+		Homeworks.refresh(function(){
+            this.hws = Homeworks.data;
+
+			this.hws.forEach(function(item){
+				//console.log(JSON.stringify(item, null, 4));
+                console.log(item.toJSON());
+            });
+	
+		}.bind(this));
+
+		this.sendHWToEdit = function(obj) {
+			//console.log("sendHWToEdit called with currentHW: " + JSON.stringify(currentHW));
+			connectViewEdit.sendHWToEdit(obj);
 		};
 		
-	});*/
+	});
 	
 	app.controller("addHWController", function(){
 		this.newHW = {};
 		this.newHW.hwDueDate = Date.now();
 		var isSuccessful = false;
+    var isSubmitted = false;
+    var msg;
 		
 		this.addHW = function(){
 			
@@ -96,47 +53,61 @@
 			hw.set("hwName", this.newHW.hwName);
 			hw.set("hwDueDate", new Date(this.newHW.hwDueDate));
 
-			hw.insert();
+			hw.insert(function(bool, msg){
+					this.isSuccessful = bool;
+                    this.isSubmitted = true;
+                    this.msg = msg;
+                    console.log("insert callback called, isSubmitted: " + this.isSubmitted + " isSuccessful: " + this.isSuccessful);
+			}.bind(this));
 			
 		};
 	});
+
+	app.service('connectViewEdit', function() {  
+  	
+  	var currentHW = {};
+  	
+  	return {
+  		sendHWToEdit: function(obj){
+  				currentHW = obj;
+  				console.log("sendHWToEdit in service called with currentHW: " + JSON.stringify(currentHW))
+  		},
+  		returnHWToEdit: function(){
+  				return currentHW;
+  		}
+  	};
+	});
 	
-	app.controller("editHWController", function(){
-		this.HW = {};
+	app.controller("editHWController", function($scope, connectViewEdit){
+		
+		var hw = connectViewEdit.returnHWToEdit();
+
+		$scope.$watch('connectViewEdit.currentHW', function (newVal, oldVal, scope) {
+			  if(newVal) { 
+			    scope.hw = connectViewEdit.returnHWToEdit();
+					console.info(JSON.stringify(hw));
+
+					this.HW = {};
+					this.HW.hwName = hw.getName();
+					this.HW.hwDescription = hw.getDescription();
+					this.HW.hwDueDate = hw.getDueDate();
+					this.HW.hwDone = hw.isDone();
+			  }
+		});
+
 		this.edited = false;
 		this.lastEditedName = "";
+		var isSuccessful = false;
+    var isSubmitted = false;
+    var msg;
 		
-		this.editHW = function(hwObj){
-			
-			var result = $.grep(myArray, function(e){ return e.id == id; });
-			
-			this.edited = true;
-			this.lastEditedName = this.newHW.hwName;
-			this.newHW = {};
+		this.editHW = function(){
+
 		};
 	});
 	
 	app.controller("denemeController", function(){
-		var myObject = {};
-
-// create a method on our object
-myObject.someMethod = function () {
-  console.log(this); // myObject
-};
-
-// call our method
-myObject.someMethod();
-		/*this.HW = {name : "burak"};
-		this.control = function(){
-			
-			console.log("1. " + this.HW.name);
-			this.getHW = function(hw){
-				this.HW = hw;
-			};
-			console.log("2. " + this.HW.name);
-			pGetHW(getHW);
-			console.log("3. " + this.HW.name);		
-		};*/
+		
 	});
 	
 	/*var hwObjects = [
@@ -155,14 +126,3 @@ myObject.someMethod();
 		
 })();
 
-
-
-
-// JQUERY SCRIPTS
-/*
-$(document).ready( function(){
-	$("#menu-toggle").click(function(e) {
-    	e.preventDefault();
-   	 $("#wrapper").toggleClass("toggled");
-	});	
-});*/
