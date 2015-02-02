@@ -15,31 +15,32 @@
 		};
 	});
 
-	app.service('connectViewEdit', function() {  
-  	
-  	var currentHW = {};
-  	
-  	return {
-  		set: function(obj){
-  				currentHW = obj;
-  				console.log("set in service called with currentHW: " + JSON.stringify(currentHW))
-  		},
-  		get: function(){
-  				return currentHW;
-  		}
-  	};
-	});
+	/*app.service('connectViewEdit', function() {  
+	  	
+	  	var currentHW = {hwName: 'deneme name'};
+	  	
+	  	return {
+	  		set: function(obj){
+	  				currentHW = obj;
+	  				console.log("set in service called with currentHW: " + JSON.stringify(currentHW))
+	  		},
+	  		get: function(){
+	  				console.log("get in service called with: " + JSON.stringify(currentHW));
+	  				return currentHW;
+	  		}
+	  	};
+	});*/
 
-	app.controller("ViewHWController", function ($scope, connectViewEdit) {
+	app.controller("ViewHWController", function ($scope, $rootScope) {
 		
 		var hws = [];
 
-		$scope.connectViewEdit = connectViewEdit;
+		//$scope.connectViewEdit = connectViewEdit;
 
 		//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
 		
 		Homeworks.load(function(){
-      this.hws = Homeworks.data;
+      		this.hws = Homeworks.data;
 
 			/*this.hws.forEach(function(item){
 				//console.log(JSON.stringify(item, null, 4));
@@ -54,10 +55,13 @@
 		}.bind(this));*/
 		
 
-		this.set = function(obj) {
-			//console.log("set called with currentHW: " + JSON.stringify(currentHW));
-			connectViewEdit.set(obj);
+		this.sendHWToEdit = function(obj) {
+			console.log("set called with obj: " + JSON.stringify(obj));
+			//connectViewEdit.set(obj);
+			$rootScope.$broadcast('change.the.currentHW', obj );
 		};
+
+
 		
 	});
 	
@@ -65,8 +69,8 @@
 		this.newHW = {};
 		this.newHW.hwDueDate = Date.now();
 		var isSuccessful = false;
-    var isSubmitted = false;
-    var msg;
+	    var isSubmitted = false;
+	    var msg;
 		
 		this.addHW = function(){
 			
@@ -89,32 +93,26 @@
 
 	
 	
-	app.controller("editHWController", function($scope, connectViewEdit){
+	app.controller("editHWController", function($scope){
 		
-		$scope.connectViewEdit = connectViewEdit;
+		//$scope.connectViewEdit = connectViewEdit;
 
 		//var hw = connectViewEdit.get();
 
-		this.HW = {};
+		$scope.HW = {};
+
+		$scope.$on('change.the.currentHW', function(event, value){
+			$scope.HW.hwName = value.getName(); //connectViewEdit.get().hwName;
+			$scope.HW.hwDescription = value.getDescription();//connectViewEdit.get().getDescription();
+			$scope.HW.hwDueDate = value.getDueDate();//connectViewEdit.get().getDueDate();
+			$scope.HW.hwDone = value.isDone(); //connectViewEdit.get().isDone();
+		});
 		
-	/*	$scope.$watch('connectViewEdit.currentHW', function (newVal, oldVal, scope) {
-			  if(newVal) { 
-			    scope.hw = connectViewEdit.get();
-					console.info(JSON.stringify(hw));
-
-					this.HW = {};
-					this.HW.hwName = hw.getName();
-					this.HW.hwDescription = hw.getDescription();
-					this.HW.hwDueDate = hw.getDueDate();
-					this.HW.hwDone = hw.isDone();
-			  }
-		});*/
-
 		this.edited = false;
 		this.lastEditedName = "";
 		var isSuccessful = false;
-    var isSubmitted = false;
-    var msg;
+	    var isSubmitted = false;
+	    var msg;
 		
 		this.editHW = function(){
 

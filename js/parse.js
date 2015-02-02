@@ -24,7 +24,7 @@
 			  }
         });
 	  },
-	  update: function(callback){
+	update: function(callback){
 	  	this.save(null, {
 			  success: function(object) {                
                 callback(true, "Homework " + object.get("hwName") + " updated successfully!");
@@ -34,7 +34,7 @@
 			  }
         });
 	  },
-	  delete: function(callback){
+	delete: function(callback){
 	  	this.destroy(null, {
 			  success: function(object) {                
                 callback(true, "Homework " + object.get("hwName") + " deleted successfully!");

@@ -2,13 +2,15 @@
 <html ng-app="HWBox">
 	<head>
 		<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
-		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.1/paper/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.1/yeti/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="http://jasny.github.io/bootstrap/dist/css/jasny-bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="http://jasny.github.io/bootstrap/examples/navbar-offcanvas/navbar-offcanvas.css">
 
 		<meta charset="utf-8">
+
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 	</head>
+
 	
 <body style="padding-top:75px" ng-controller="TabController as tab">
 	
@@ -84,8 +86,8 @@
 		 		<div class="panel-heading">
 					<span class="panel-title">{{hw.getName() }} / {{hw.id}}</span>
 					<span ng-show="hw.isDone()" class="label label-success pull-right"><span class="glyphicon glyphicon-ok"></span> DONE!</span>
-		 	 		<span ng-show="!hw.isDone()" class="label label-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Undone...</span>
-		  		</div>
+		 	 		<span ng-show="!hw.isDone()" class="label label-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Undone...</span
+>		  		</div>
 		 	 	<div class="panel-body">
 		 	 		<p><strong>Due Date: </strong>{{ hw.getDueDate() | date: 'dd/MM/y HH:mm' }}</p>
 		 	 		
@@ -190,36 +192,44 @@
 		<!-- EDIT HOMEWORK -->
 		<div class="col-sm-12" ng-controller="editHWController as editHWCtrl" ng-show="tab.isSet(4)">
 		
-			<div class="alert alert-success" role="alert" ng-show="editHWCtrl.edited">
-			  <a href="#" class="alert-link">Homework "<strong>{{editHWCtrl.lastAddedName}}</strong>{{"\" is added successfully!"}}</a>
-			</div>
-
-		
-			<div class="panel panel-default">
-				<div class="panel-heading"><h3 class="panel-title">HW Preview:</h3></div>
-				<div class="panel-body">
-					<p><strong>Name: </strong>{{ editHWCtrl.HW.hwName }}</p>
-					<p><strong>Description: </strong>{{ editHWCtrl.HW.hwDescription }}</p>
-					<p><strong>Due Date: </strong>{{ editHWCtrl.HW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
-				</div>
+			<div class="alert alert-warning" role="alert" ng-init="$valid = true" ng-show="!editHWForm.hwName.$pristine && !editHWForm.hwDueDate.$pristine && !editHWForm.$valid">
+			  <a class="alert-link">Form is invalid!</a>
+			  
 			</div>
 			
-			<!-- novalidate is for disabling default browser HTML5 validation -->
+            <!--<div class="alert alert-info alert-warning alert-danger" role="alert">
+			  <a href="#" class="alert-link">...</a>
+			</div>-->
+			<div class="alert" role="alert" ng-show = "editHWCtrl.isSubmitted" ng-class="{'alert-success': editHWCtrl.isSuccessful, 'alert-danger': !editHWCtrl.isSuccessful }">
+			  <a href="#" class="alert-link">{{editHWCtrl.msg}}</a>
+			</div>
+			
+		
+			<div class="panel panel-primary">
+				<div class="panel-heading"><h3 class="panel-title">HW Preview:</h3></div>
+				<div class="panel-body">
+					<p><strong>Name: </strong>{{ HW.hwName }}</p>
+					<p><strong>Description: </strong>{{ HW.hwDescription }}</p>
+					<p><strong>Due Date: </strong>{{ HW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
+				</div>
+			</div>
+
+			<!-- novalidate is for disabling default browshn er HTML5 validation -->
 			<form name="editHWForm"  ng-submit="editHWCtrl.editHW()" novalidate> 
 				<div class="form-group">
-					<input type="text" ng-model="editHWCtrl.HW.hwName" class="form-control" placeholder="{{editHWCtrl.connectViewEdit.get().getName()}}" required />
+					<input type="text" name="hwName" ng-model="HW.hwName" class="form-control"  required />
 				</div>
 				
 				<div class="form-group">
-					<textarea class="form-control" ng-model="editHWCtrl.HW.hwDescription" placeholder="{{editHWCtrl.connectViewEdit.get().getDescription()}}"></textarea>
+					<textarea class="form-control" name="hwDescription" ng-model="HW.hwDescription" ></textarea>
 				</div>
 				
 				 <div class="form-group">
-				 	<input type="text" class="form-control" ng-model="editHWCtrl.HW.hwDueDate" placeholder="{{editHWCtrl.connectViewEdit.get().getDueDate()}}" required />
+				 	<input type="text" class="form-control" name="hwDueDate" ng-model="HW.hwDueDate" required />
 				 </div>
 				
 				<div class="checkbox">
-					<label><input type="checkbox" ng-model="editHWCtrl.HW.hwDone" />Done?</label>
+					<label><input type="checkbox" name="hwDone" ng-model="HW.hwDone" />Done?</label>
 				
 					<input type="submit" class="pull-right btn btn-default" value="Add!" />
 				</div>
