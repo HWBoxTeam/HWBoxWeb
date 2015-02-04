@@ -1,6 +1,29 @@
 (function(){
 	var app = angular.module('HWBox', ['parse']);
-	
+
+	app.service('dataService', function() {  
+	  	
+	  	var hws = [];
+	  	
+	  	return {
+	  		load: function(){
+	  			//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
+				console.log("dataService.load() called");
+				Homeworks.load(function(){
+		      		hws = Homeworks.data;			
+				}.bind(this));
+	  		},
+	  		/*set: function(obj){
+	  				currentHW = obj;
+	  				console.log("set in service called with currentHW: " + JSON.stringify(currentHW))
+	  		},*/
+	  		get: function(){
+  				console.log("get in service called with: " + JSON.stringify(hws));
+  				return hws;
+	  		}
+	  	};
+	});
+
 	app.controller("CourseController", function(){
 		this.crss = crsObjects;
 	});
@@ -15,39 +38,12 @@
 		};
 	});
 
-	/*app.service('connectViewEdit', function() {  
-	  	
-	  	var currentHW = {hwName: 'deneme name'};
-	  	
-	  	return {
-	  		set: function(obj){
-	  				currentHW = obj;
-	  				console.log("set in service called with currentHW: " + JSON.stringify(currentHW))
-	  		},
-	  		get: function(){
-	  				console.log("get in service called with: " + JSON.stringify(currentHW));
-	  				return currentHW;
-	  		}
-	  	};
-	});*/
-
-	app.controller("ViewHWController", function ($scope, $rootScope) {
-		
-		var hws = [];
-
-		//$scope.connectViewEdit = connectViewEdit;
-
-		//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
-		
-		Homeworks.load(function(){
-      		this.hws = Homeworks.data;
-
-			/*this.hws.forEach(function(item){
-				//console.log(JSON.stringify(item, null, 4));
-                console.log(item.toJSON());
-            });*/
 	
-		}.bind(this));
+
+	app.controller("ViewHWController", function ($scope, $rootScope, dataService) {
+		
+		$scope.dataService = dataService;
+		//$scope.connectViewEdit = connectViewEdit;
 
 		/*Homework.getById("DDMspc3UjI", function(result){
 			Homeworks.data.push(result);
@@ -61,11 +57,23 @@
 			$rootScope.$broadcast('change.the.currentHW', obj );
 		};
 
+		this.deleteHW = function(obj){
+			var del = confirm("Are you sure you want to delete homework '" + obj.getName() + "'?");
+			var that = this;
 
-		
+			if (del == true) {
+			   obj.delete(function(bool, msg){
+			   		console.log("delete's callback function called");
+			   		alert(msg);
+			   		$scope.dataService.load();
+			   });
+			}
+		}
 	});
 	
-	app.controller("addHWController", function(){
+	app.controller("addHWController", function($scope, dataService){
+		$scope.dataService = dataService;
+
 		this.newHW = {};
 		this.newHW.hwDueDate = Date.now();
 		var isSuccessful = false;
@@ -82,12 +90,14 @@
 			hw.set("hwDueDate", new Date(this.newHW.hwDueDate));
 
 			hw.insert(function(bool, msg){
-					this.isSuccessful = bool;
-                    this.isSubmitted = true;
-                    this.msg = msg;
-                    console.log("insert callback called, isSubmitted: " + this.isSubmitted + " isSuccessful: " + this.isSuccessful);
+				this.isSuccessful = bool;
+                this.isSubmitted = true;
+                this.msg = msg;
+                console.log("insert callback called, isSubmitted: " + this.isSubmitted + " isSuccessful: " + this.isSuccessful);
+				
 			}.bind(this));
 			
+			$scope.dataService.load();
 		};
 	});
 
@@ -100,12 +110,14 @@
 		//var hw = connectViewEdit.get();
 
 		$scope.HW = {};
+		var parseHWObj;
 
 		$scope.$on('change.the.currentHW', function(event, value){
-			$scope.HW.hwName = value.getName(); //connectViewEdit.get().hwName;
-			$scope.HW.hwDescription = value.getDescription();//connectViewEdit.get().getDescription();
-			$scope.HW.hwDueDate = value.getDueDate();//connectViewEdit.get().getDueDate();
-			$scope.HW.hwDone = value.isDone(); //connectViewEdit.get().isDone();
+			parseHWObj = value;
+			$scope.HW.hwName = parseHWObj.getName(); //connectViewEdit.get().hwName;
+			$scope.HW.hwDescription = parseHWObj.getDescription();//connectViewEdit.get().getDescription();
+			$scope.HW.hwDueDate = parseHWObj.getDueDate();//connectViewEdit.get().getDueDate();
+			$scope.HW.hwDone = parseHWObj.isDone(); //connectViewEdit.get().isDone();
 		});
 		
 		this.edited = false;
@@ -116,6 +128,16 @@
 		
 		this.editHW = function(){
 
+			parseHWObj.set("hwName", $scope.HW.hwName);
+			parseHWObj.set("hwDescription", $scope.HW.hwDescription);
+			parseHWObj.set("hwDueDate", $scope.HW.hwDueDate);
+			parseHWObj.set("hwDone", $scope.HW.hwDone);
+
+			parseHWObj.update(function(bool, msg){
+				this.isSuccessful = bool;
+				this.isSubmitted = true;
+				this.msg = msg;
+			}.bind(this));
 		};
 	});
 	

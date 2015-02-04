@@ -80,8 +80,8 @@
 		
 		<div class="col-sm-12 " ng-show="tab.isSet(1)" ng-controller="ViewHWController as viewHwCtrl" >
 			
-			<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="hw in viewHwCtrl.hws">
+			<div class="row" ng-init="dataService.load()">
+			<div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="hw in dataService.get()">
 			<div class="panel panel-default" ng-class="{ 'panel-success' : hw.isDone(), 'panel-danger' : !hw.isDone()}">
 		 		<div class="panel-heading">
 					<span class="panel-title">{{hw.getName() }} / {{hw.id}}</span>
@@ -97,7 +97,7 @@
 		 	 			<button type="button" class="btn btn-success btn-sm" ng-show="!hw.isDone()" ng-click="hw.markAs(true)"><span class="glyphicon glyphicon-ok"></span> Mark as Done</button>
 		 	 			<span class="btn-group" role="group" aria-label="...">
 						  <button type="button" class="btn btn-default btn-sm" ng-click="viewHwCtrl.sendHWToEdit(hw); tab.setTab(4);"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-						  <button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+						  <button type="button" class="btn btn-danger btn-sm" ng-click="viewHwCtrl.deleteHW(hw);"><span class="glyphicon glyphicon-trash"></span> Delete</button>
 						</span>
 		 	 		</p>
 		  		</div>
@@ -230,10 +230,10 @@
 				
 				<div class="checkbox">
 					<label><input type="checkbox" name="hwDone" ng-model="HW.hwDone" />Done?</label>
-				
-					<input type="submit" class="pull-right btn btn-default" value="Add!" />
 				</div>
-				
+
+				<input type="submit" class="btn btn-primary btn-block" value="Update!" />
+
 				<div class="clearfix"></div>
 
 			</form>

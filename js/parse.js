@@ -12,7 +12,7 @@
     getDueDate: function(){ return this.get("hwDueDate"); },
     markAs: function(bool){
         this.set("hwDone", bool);
-        this.update();
+        this.update(function(bool,msg){});
     },
     insert: function(callback){
 	  	this.save(null, {
@@ -30,17 +30,18 @@
                 callback(true, "Homework " + object.get("hwName") + " updated successfully!");
 			  },
 			  error: function(model, error) {
-                callback(false, "Cannot be updated becasue: " + error.msg);
+                callback(false, "Cannot be updated because: " + error.msg);
 			  }
         });
 	  },
 	delete: function(callback){
 	  	this.destroy(null, {
-			  success: function(object) {                
-                callback(true, "Homework " + object.get("hwName") + " deleted successfully!");
+			  success: function(object) {  
+			  	console.log("Homework's delete function called");            
+                callback(true, "Homework deleted successfully!");
 			  },
 			  error: function(model, error) {
-                callback(false, "Cannot be deleted becasue: " + error.msg);
+                callback(false, "Cannot be deleted because: " + error.msg);
 			  }
         });
 	  },
