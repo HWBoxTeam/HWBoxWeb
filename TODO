@@ -2,6 +2,11 @@ TODO
 ------------------
 Sign-in page
 Course class
+Sidebar is very slow
+After adding and editing redirect to view homeworks
+Sidebar does not close after selecting a page
+Sort homeworks according to the date, done etc.
+Remove done checkbox on add hw page
 
 CURRENT PROBLEMS
 ------------------
