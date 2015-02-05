@@ -5,51 +5,52 @@
 	Parse.initialize("cf86jsjcwXfhr8OkIHl0Viizqtyh3XdfMmRc0Fmr", "kwQA7fHYuwjOLWDMXBJtPATFwKeJwmINGw5GgqT3");
 
 	this.Homework = Parse.Object.extend("fHomework", {
-	// Instance methods
-    getName: function(){ return this.get("hwName"); },
-    getDescription: function(){ return this.get("hwDescription"); },
-    isDone: function(){ return this.get("hwDone"); },
-    getDueDate: function(){ return this.get("hwDueDate"); },
-    markAs: function(bool){
-        this.set("hwDone", bool);
-        this.update(function(bool,msg){});
-    },
-    insert: function(callback){
-	  	this.save(null, {
-			  success: function(object) {                
-                callback(true, "Homework " + object.get("hwName") + " added successfully!");
-			  },
-			  error: function(model, error) {
-                callback(false, "Cannot be added becasue: " + error.msg);
-			  }
-        });
-	  },
-	update: function(callback){
-	  	this.save(null, {
-			  success: function(object) {                
-                callback(true, "Homework " + object.get("hwName") + " updated successfully!");
-			  },
-			  error: function(model, error) {
-                callback(false, "Cannot be updated because: " + error.msg);
-			  }
-        });
-	  },
-	delete: function(callback){
-	  	this.destroy(null, {
-			  success: function(object) {  
-			  	console.log("Homework's delete function called");            
+		// Instance methods
+	    getName: function(){ return this.get("hwName"); },
+	    getDescription: function(){ return this.get("hwDescription"); },
+	    isDone: function(){ return this.get("hwDone"); },
+	    getDueDate: function(){ return this.get("hwDueDate"); },
+	    markAs: function(bool){
+	        this.set("hwDone", bool);
+	        this.update(function(bool,msg){});
+	    },
+	    insert: function(callback){
+		  	this.save(null, {
+				  success: function(object) {                
+	                callback(true, "Homework " + object.get("hwName") + " added successfully!");
+				  },
+				  error: function(model, error) {
+	                callback(false, "Cannot be added becasue: " + error.msg);
+				  }
+	        });
+		  },
+		update: function(callback){
+		  	this.save(null, {
+				  success: function(object) {                
+	                callback(true, "Homework " + object.get("hwName") + " updated successfully!");
+				  },
+				  error: function(model, error) {
+	                callback(false, "Cannot be updated because: " + error.msg);
+				  }
+	        });
+		  },
+		delete: function(callback){
+			this.destroy({
+			  success: function(object) {
+			    console.log("Homework's delete function called - SUCCESS");            
                 callback(true, "Homework deleted successfully!");
 			  },
-			  error: function(model, error) {
-                callback(false, "Cannot be deleted because: " + error.msg);
+			  error: function(object, error) {
+			     callback(false, "Cannot be deleted because: " + error.msg);
+			     console.log("Homework's delete function called - FAILURE");
 			  }
-        });
-	  },
-	  
-	  // Instance properties go in an initialize method
-	  initialize: function (attrs, options) {
-		//this.hwName = "Unknown";
-	  }
+			});
+		  },
+		  
+		  // Instance properties go in an initialize method
+		  initialize: function (attrs, options) {
+			//this.hwName = "Unknown";
+		  }
 	}, 
 	{
 	  // Class methods

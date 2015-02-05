@@ -8,7 +8,7 @@
 	  	return {
 	  		load: function(){
 	  			//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
-				console.log("dataService.load() called");
+				console.info("dataService.load() called");
 				Homeworks.load(function(){
 		      		hws = Homeworks.data;			
 				}.bind(this));
@@ -66,6 +66,7 @@
 			   		console.log("delete's callback function called");
 			   		alert(msg);
 			   		$scope.dataService.load();
+			   		$scope.$apply();
 			   });
 			}
 		}
@@ -94,37 +95,34 @@
                 this.isSubmitted = true;
                 this.msg = msg;
                 console.log("insert callback called, isSubmitted: " + this.isSubmitted + " isSuccessful: " + this.isSuccessful);
-				
+				$scope.$apply();
 			}.bind(this));
 			
 			$scope.dataService.load();
+
 		};
 	});
 
 	
 	
-	app.controller("editHWController", function($scope){
+	app.controller("editHWController", function($scope, dataService){
 		
-		//$scope.connectViewEdit = connectViewEdit;
-
-		//var hw = connectViewEdit.get();
-
+		$scope.dataService = dataService;
 		$scope.HW = {};
-		var parseHWObj;
 
-		$scope.$on('change.the.currentHW', function(event, value){
-			parseHWObj = value;
-			$scope.HW.hwName = parseHWObj.getName(); //connectViewEdit.get().hwName;
-			$scope.HW.hwDescription = parseHWObj.getDescription();//connectViewEdit.get().getDescription();
-			$scope.HW.hwDueDate = parseHWObj.getDueDate();//connectViewEdit.get().getDueDate();
-			$scope.HW.hwDone = parseHWObj.isDone(); //connectViewEdit.get().isDone();
-		});
-		
-		this.edited = false;
-		this.lastEditedName = "";
+		var parseHWObj;
 		var isSuccessful = false;
 	    var isSubmitted = false;
 	    var msg;
+		
+		$scope.$on('change.the.currentHW', function(event, value){
+			console.log("broadcast $on function called");
+			parseHWObj = value;
+			$scope.HW.hwName = parseHWObj.getName(); 
+			$scope.HW.hwDescription = parseHWObj.getDescription();
+			$scope.HW.hwDueDate = parseHWObj.getDueDate();
+			$scope.HW.hwDone = parseHWObj.isDone(); 
+		});
 		
 		this.editHW = function(){
 
@@ -137,7 +135,11 @@
 				this.isSuccessful = bool;
 				this.isSubmitted = true;
 				this.msg = msg;
+				$scope.$apply();
 			}.bind(this));
+
+			$scope.dataService.load();
+
 		};
 	});
 	
