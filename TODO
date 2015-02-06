@@ -1,13 +1,14 @@
 TODO
 ------------------
+!!! Separate pages using directives
 Sign-in page
 Course class
 Sidebar is very slow
 After adding and editing redirect to view homeworks
-Sidebar does not close after selecting a page
-Sort homeworks according to the date, done etc.
-Remove done checkbox on add hw page
++Sidebar does not close after selecting a page
++Sort homeworks according to the date, done etc.
++Remove done checkbox on add hw page
 
 CURRENT PROBLEMS
 ------------------
-After editing the homework, view homeworks does not show the change done on that hw.
++After editing the homework, view homeworks does not show the change done on that hw.

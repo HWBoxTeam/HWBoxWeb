@@ -6,12 +6,16 @@
 	  	var hws = [];
 	  	
 	  	return {
-	  		load: function(){
-	  			//Homeworks.setQuery(new Parse.Query(Homework).equalTo("hwDone", true));
+	  		load: function(callback){
+	  			Homeworks.setQuery(new Parse.Query(Homework).descending("updatedAt"));
 				console.info("dataService.load() called");
 				Homeworks.load(function(){
-		      		hws = Homeworks.data;			
+		      		hws = Homeworks.data;	
+		      		callback(); //after loading data do whatever you want with callback() function, e.g. refresh the view		
 				}.bind(this));
+	  		},
+	  		init: function(){
+	  			this.load(function(){});
 	  		},
 	  		/*set: function(obj){
 	  				currentHW = obj;
@@ -65,8 +69,10 @@
 			   obj.delete(function(bool, msg){
 			   		console.log("delete's callback function called");
 			   		alert(msg);
-			   		$scope.dataService.load();
-			   		$scope.$apply();
+			   		$scope.dataService.load(function(){
+			   			$scope.$apply(); //after loading refresht the controller's view
+			   			console.log("dataService.load callback fcn called");
+			   		});
 			   });
 			}
 		}
@@ -89,17 +95,19 @@
 			hw.set("hwDescription", this.newHW.hwDescription);
 			hw.set("hwName", this.newHW.hwName);
 			hw.set("hwDueDate", new Date(this.newHW.hwDueDate));
+			hw.set("hwDone", false);
 
 			hw.insert(function(bool, msg){
 				this.isSuccessful = bool;
                 this.isSubmitted = true;
                 this.msg = msg;
                 console.log("insert callback called, isSubmitted: " + this.isSubmitted + " isSuccessful: " + this.isSuccessful);
-				$scope.$apply();
+				this.newHW = {}; //reset the form
 			}.bind(this));
 			
-			$scope.dataService.load();
-
+			$scope.dataService.load(function(){
+			   	$scope.$apply(); //after loading refresht the controller's view
+			});
 		};
 	});
 
@@ -138,7 +146,10 @@
 				$scope.$apply();
 			}.bind(this));
 
-			$scope.dataService.load();
+			$scope.dataService.load(function(){
+				$scope.HW = {};
+	   			$scope.$apply(); //after loading refresht the controller's view
+	   		});
 
 		};
 	});
