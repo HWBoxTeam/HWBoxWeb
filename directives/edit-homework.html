@@ -1,0 +1,50 @@
+<!-- EDIT HOMEWORK -->
+		<div class="col-sm-12" ng-show="page.isSet(4)">
+		
+			<div class="alert alert-warning" role="alert" ng-init="$valid = true" ng-show="!editHWForm.hwName.$pristine && !editHWForm.hwDueDate.$pristine && !editHWForm.$valid">
+			  <a class="alert-link">Form is invalid!</a>
+			  
+			</div>
+			
+            <!--<div class="alert alert-info alert-warning alert-danger" role="alert">
+			  <a href="#" class="alert-link">...</a>
+			</div>-->
+			<div class="alert" role="alert" ng-show = "editHWCtrl.isSubmitted" ng-class="{'alert-success': editHWCtrl.isSuccessful, 'alert-danger': !editHWCtrl.isSuccessful }">
+			  <h4 href="#" class="alert-link">{{editHWCtrl.msg}}<br/><a class="alert-link" ng-click="page.setPage(1)">Click here to see your homeworks!</a></h4>
+			</div>
+			
+		
+			<div class="panel panel-primary">
+				<div class="panel-heading"><h3 class="panel-title">HW Preview:</h3></div>
+				<div class="panel-body">
+					<p><strong>Name: </strong>{{ HW.hwName }}</p>
+					<p><strong>Description: </strong>{{ HW.hwDescription }}</p>
+					<p><strong>Due Date: </strong>{{ HW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
+				</div>
+			</div>
+
+			<!-- novalidate is for disabling default browshn er HTML5 validation -->
+			<form name="editHWForm"  ng-submit="editHWCtrl.editHW()" novalidate> 
+				<div class="form-group">
+					<input type="text" name="hwName" ng-model="HW.hwName" class="form-control"  required />
+				</div>
+				
+				<div class="form-group">
+					<textarea class="form-control" name="hwDescription" ng-model="HW.hwDescription" ></textarea>
+				</div>
+				
+				 <div class="form-group">
+				 	<input type="text" class="form-control" name="hwDueDate" ng-model="HW.hwDueDate" required />
+				 </div>
+				
+				<div class="checkbox">
+					<label><input type="checkbox" name="hwDone" ng-model="HW.hwDone" />Done?</label>
+				</div>
+
+				<input type="submit" class="btn btn-primary btn-block" value="Update!" />
+
+				<div class="clearfix"></div>
+
+			</form>
+		</div>
+		<!-- END OF EDIT HOMEWORK-->

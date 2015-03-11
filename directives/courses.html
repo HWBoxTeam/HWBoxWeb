@@ -1,0 +1,25 @@
+<!-- COURSES -->
+		<div class="col-sm-12" ng-show="page.isSet(2)">
+		
+			<table class="table table-striped table-bordered table-hover">
+			<thead>
+			  <tr>
+			  	<th>objectId</th>
+				<th>courseName</th>
+				<th>userPtr</th>
+				<th>courseColor</th>
+			  </tr>
+	   		</thead>
+			
+			<tbody>      
+			  <tr ng-repeat="crs in crsCtrl.crss">
+			  	<td>{{crs.objectId}}</td>
+			  	<td>{{crs.courseName}}</td>
+			  	<td>{{crs.userPtr}}</td>
+			  	<td>{{crs.courseColor}}</td>
+			  </tr>  
+			</tbody>
+			</table>
+		</div>
+		
+		<!-- END OF COURSES -->

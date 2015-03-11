@@ -1,0 +1,47 @@
+<!-- ADD HOMEWORK -->
+		<div class="col-sm-12" ng-show="page.isSet(3)">
+		
+			<div class="alert alert-warning" role="alert" ng-init="$valid = true" ng-show="!addHWForm.hwName.$pristine && !addHWForm.hwDueDate.$pristine && !addHWForm.$valid">
+			  <a class="alert-link">Form is invalid!</a>
+			  
+			</div>
+			
+            <!--<div class="alert alert-info alert-warning alert-danger" role="alert">
+			  <a href="#" class="alert-link">...</a>
+			</div>-->
+			<div class="alert" role="alert" ng-show = "addHWCtrl.isSubmitted" ng-class="{'alert-success': addHWCtrl.isSuccessful, 'alert-danger': !addHWCtrl.isSuccessful }">
+			  <h4 href="#" class="alert-link">{{addHWCtrl.msg}} <br/><a class="alert-link" ng-click="page.setPage(1)">Click here to see your homeworks!</a></h4>
+			</div>
+			
+		
+			<div class="panel panel-primary">
+				<div class="panel-heading"><h3 class="panel-title">HW Preview:</h3></div>
+				<div class="panel-body">
+					<p><strong>Name: </strong>{{ addHWCtrl.newHW.hwName }}</p>
+					<p><strong>Description: </strong>{{ addHWCtrl.newHW.hwDescription }}</p>
+					<p><strong>Due Date: </strong>{{ addHWCtrl.newHW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
+					<!-- <p>LÖLÖL {{addHWCtrl.isSuccessful }} -->
+				</div>
+			</div>
+			
+			<!-- novalidate is for disabling default browser HTML5 validation -->
+			<form name="addHWForm"  ng-submit="addHWForm.$valid && addHWCtrl.addHW()" novalidate> 
+				<div class="form-group">
+					<input type="text" name="hwName" ng-model="addHWCtrl.newHW.hwName" class="form-control" placeholder="Homework Name" required />
+				</div>
+				
+				<div class="form-group">
+					<textarea class="form-control" name="hwDescription" ng-model="addHWCtrl.newHW.hwDescription" placeholder="Homework description"></textarea>
+				</div>
+				
+				 <div class="form-group">
+				 	<input type="number" class="form-control" name="hwDueDate" ng-model="addHWCtrl.newHW.hwDueDate" placeholder="Due date in UNIX timestamp" required />
+				 </div>
+				
+				<input type="submit" class="btn btn-primary btn-block" value="Add!" />
+				
+				<div class="clearfix"></div>
+
+			</form>
+		</div>
+		<!-- END OF ADD HOMEWORK-->

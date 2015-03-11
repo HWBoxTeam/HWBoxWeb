@@ -1,0 +1,37 @@
+<!-- VIEW HOMEWORKS -->
+		
+		<div class="row" ng-show="page.isSet(1)" ng-init="dataService.init()">
+			<div class="container">
+			<div class="row" ng-repeat="hw in dataService.get()">
+			<div class="visible-md visible-lg col-md-3 "></div>
+			<div class="col-xs-12 col-md-6" >
+			
+			<div class="panel panel-default" ng-class="{ 'panel-success' : hw.isDone(), 'panel-danger' : !hw.isDone()}">
+		 		<div class="panel-heading">
+					<span class="panel-title">{{hw.getName() }} / {{hw.id}}</span>
+					<span ng-show="hw.isDone()" class="label label-success pull-right"><span class="glyphicon glyphicon-ok"></span> DONE!</span>
+		 	 		<span ng-show="!hw.isDone()" class="label label-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Undone...</span
+>		  		</div>
+		 	 	<div class="panel-body">
+		 	 		<p><strong>Due Date: </strong>{{ hw.getDueDate() | date: 'dd/MM/y HH:mm' }}</p>
+		 	 		
+		 	 		<p>{{hw.getDescription() }}</p>
+		 	 		<p>
+		 	 			<button type="button" class="btn btn-danger btn-sm" ng-show="hw.isDone()" ng-click="hw.markAs(false)"><span class="glyphicon glyphicon-remove"></span> Mark as Undone</button>
+		 	 			<button type="button" class="btn btn-success btn-sm" ng-show="!hw.isDone()" ng-click="hw.markAs(true)"><span class="glyphicon glyphicon-ok"></span> Mark as Done</button>
+		 	 			<span class="btn-group" role="group" aria-label="...">
+						  <button type="button" class="btn btn-default btn-sm" ng-click="viewHwCtrl.sendHWToEdit(hw); page.setPage(4);"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+						  <button type="button" class="btn btn-danger btn-sm" ng-click="viewHwCtrl.deleteHW(hw);"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+						</span>
+		 	 		</p>
+		  		</div>
+			</div>
+			</div>
+			<div class="visible-md visible-lg col-md-3 "></div>
+			</div><!-- end of row -->
+	
+			</div><!-- end of container div -->
+		</div><!-- end of outer-row -->
+		
+		
+		<!-- END OF VIEW HOMEWORKS -->

@@ -12,23 +12,25 @@
 	</head>
 
 	
-<body style="padding-top:75px" ng-controller="TabController as tab">
+<body style="padding-top:75px" ng-controller="PageController as page">
 	
 	<nav class="navbar navbar-fixed-top navbar-inverse">
       <div class="container-fluid">
+
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle pull-left" style="margin-right:0px"data-toggle="offcanvas" data-target=".navbar-offcanvas" data-canvas="body">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">
-	  				<span class="glyphicon glyphicon-book"></span> HWBox
-	  		</a>
+	        <button type="button" class="navbar-toggle pull-left" style="margin-right:0px" data-toggle="offcanvas" data-target=".navbar-offcanvas" data-canvas="body">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	        </button>
+	        <a class="navbar-brand" href="#" ng-click="page.setPage(0)">
+		  		<span class="glyphicon glyphicon-book"></span> HWBox
+		  	</a>
         </div>
+
          <div class="navbar-offcanvas offcanvas navmenu-fixed-left">
-          <a class="navmenu-brand" href="#" ng-click="tab.setTab(0)">
+          <a class="navmenu-brand" href="#" ng-click="page.setPage(0)" onclick="$('.navbar-header > button').click()">
           	<span class="glyphicon glyphicon-book"></span> HWBox
 	  		</a>
           </a>
@@ -40,26 +42,28 @@
               
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Homeworks <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li ng-class="{ active: tab.isSet(1) }"  data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body"><a href="#" ng-click="tab.setTab(1)">View Homeworks</a></li>
+              	<!-- THIS CODE TRICKS THE BROWSER BY TRIGGERING A CLICK EVENT ON TOGGLE-NAVIGATION BUTTON FOR CLOSING SIDEBAR AFTER CLICKING ON A LINK IN SIDEBAR => onclick="$('.navbar-header > button').click()" -->
+                <li ng-class="{ active: page.isSet(1) }"  data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()"><a href="#" ng-click="page.setPage(1)">View Homeworks</a></li>
 
-                <li ng-class="{ active: tab.isSet(3) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body"><a href="#" ng-click="tab.setTab(3)">Add Homework</a></li>
+                <li ng-class="{ active: page.isSet(3) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()"><a href="#" ng-click="page.setPage(3)">Add Homework</a></li>
                 
-                <li><a href="#">Something else here</a></li>
+                <li onclick="$('.navbar-header > button').click()"><a href="#">Something else here</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li onclick="$('.navbar-header > button').click()"><a href="#">Separated link</a></li>
+                <li onclick="$('.navbar-header > button').click()"><a href="#">One more separated link</a></li>
               </ul> 
             </li>
 
-                <li ng-class="{ active: tab.isSet(2) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body">
-	  				<a href="#" ng-click="tab.setTab(2)">View Courses</a>
+                <li ng-class="{ active: page.isSet(2) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()">
+	  				<a href="#" ng-click="page.setPage(2)">View Courses</a>
 		  		</li>
-		  		<li ng-class="{ active: tab.isSet(5) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body">
-		  			<a href="#" ng-click="tab.setTab(5)">Deneme</a>
+		  		<li ng-class="{ active: page.isSet(5) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()">
+		  			<a href="#" ng-click="page.setPage(5)">Deneme</a>
 		  		</li>
           </ul>
         </div><!--/.nav-collapse -->
+
       </div>
     </nav><!-- /.navbar -->
     
@@ -67,184 +71,20 @@
 	
 	<div class="container-fluid">
 	
-		<!-- DASHBOARD -->
-		<div class="col-sm-12 " ng-show="tab.isSet(0)" ng-controller="denemeController as denemeCtrl" >
-		
-			<div class="jumbotron">
-				<h1> Hello HWBox!</h1>
-				
-				<p>A Brand New HW Management System...</p>
-			
-			</div>
-		</div>
-		
-		<!-- END OF DASHBOARD -->
+		<dashboard></dashboard>
 	
-		<!-- VIEW HOMEWORKS -->
+		<add-homework></add-homework>
 		
-		<div class="row" ng-show="tab.isSet(1)" ng-controller="ViewHWController as viewHwCtrl" ng-init="dataService.init()">
-			
-			<div class="row" ng-repeat="hw in dataService.get()">
-			<div class="visible-md visible-lg col-md-3 "></div>
-			<div class="col-xs-12 col-md-6" >
-			
-			<div class="panel panel-default" ng-class="{ 'panel-success' : hw.isDone(), 'panel-danger' : !hw.isDone()}">
-		 		<div class="panel-heading">
-					<span class="panel-title">{{hw.getName() }} / {{hw.id}}</span>
-					<span ng-show="hw.isDone()" class="label label-success pull-right"><span class="glyphicon glyphicon-ok"></span> DONE!</span>
-		 	 		<span ng-show="!hw.isDone()" class="label label-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Undone...</span
->		  		</div>
-		 	 	<div class="panel-body">
-		 	 		<p><strong>Due Date: </strong>{{ hw.getDueDate() | date: 'dd/MM/y HH:mm' }}</p>
-		 	 		
-		 	 		<p>{{hw.getDescription() }}</p>
-		 	 		<p>
-		 	 			<button type="button" class="btn btn-danger btn-sm" ng-show="hw.isDone()" ng-click="hw.markAs(false)"><span class="glyphicon glyphicon-remove"></span> Mark as Undone</button>
-		 	 			<button type="button" class="btn btn-success btn-sm" ng-show="!hw.isDone()" ng-click="hw.markAs(true)"><span class="glyphicon glyphicon-ok"></span> Mark as Done</button>
-		 	 			<span class="btn-group" role="group" aria-label="...">
-						  <button type="button" class="btn btn-default btn-sm" ng-click="viewHwCtrl.sendHWToEdit(hw); tab.setTab(4);"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-						  <button type="button" class="btn btn-danger btn-sm" ng-click="viewHwCtrl.deleteHW(hw);"><span class="glyphicon glyphicon-trash"></span> Delete</button>
-						</span>
-		 	 		</p>
-		  		</div>
-			</div>
-			</div>
-			<div class="visible-md visible-lg col-md-3 "></div>
-			</div><!-- end of row -->
-	
-			
-		</div><!-- end of col -->
-		
-		
-		<!-- END OF VIEW HOMEWORKS -->
-	
-		<!-- COURSES -->
-		<div class="col-sm-12" ng-controller="CourseController as crsCtrl" ng-show="tab.isSet(2)">
-		
-			<table class="table table-striped table-bordered table-hover">
-			<thead>
-			  <tr>
-			  	<th>objectId</th>
-				<th>courseName</th>
-				<th>userPtr</th>
-				<th>courseColor</th>
-			  </tr>
-	   		</thead>
-			
-			<tbody>      
-			  <tr ng-repeat="crs in crsCtrl.crss">
-			  	<td>{{crs.objectId}}</td>
-			  	<td>{{crs.courseName}}</td>
-			  	<td>{{crs.userPtr}}</td>
-			  	<td>{{crs.courseColor}}</td>
-			  </tr>  
-			</tbody>
-			</table>
-		</div>
-		
-		<!-- END OF COURSES -->
-	
-		<!-- ADD HOMEWORK -->
-		<div class="col-sm-12" ng-controller="addHWController as addHWCtrl" ng-show="tab.isSet(3)">
-		
-			<div class="alert alert-warning" role="alert" ng-init="$valid = true" ng-show="!addHWForm.hwName.$pristine && !addHWForm.hwDueDate.$pristine && !addHWForm.$valid">
-			  <a class="alert-link">Form is invalid!</a>
-			  
-			</div>
-			
-            <!--<div class="alert alert-info alert-warning alert-danger" role="alert">
-			  <a href="#" class="alert-link">...</a>
-			</div>-->
-			<div class="alert" role="alert" ng-show = "addHWCtrl.isSubmitted" ng-class="{'alert-success': addHWCtrl.isSuccessful, 'alert-danger': !addHWCtrl.isSuccessful }">
-			  <h4 href="#" class="alert-link">{{addHWCtrl.msg}} <br/><a class="alert-link" ng-click="tab.setTab(1)">Click here to see your homeworks!</a></h4>
-			</div>
-			
-		
-			<div class="panel panel-primary">
-				<div class="panel-heading"><h3 class="panel-title">HW Preview:</h3></div>
-				<div class="panel-body">
-					<p><strong>Name: </strong>{{ addHWCtrl.newHW.hwName }}</p>
-					<p><strong>Description: </strong>{{ addHWCtrl.newHW.hwDescription }}</p>
-					<p><strong>Due Date: </strong>{{ addHWCtrl.newHW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
-					<!-- <p>LÖLÖL {{addHWCtrl.isSuccessful }} -->
-				</div>
-			</div>
-			
-			<!-- novalidate is for disabling default browser HTML5 validation -->
-			<form name="addHWForm"  ng-submit="addHWForm.$valid && addHWCtrl.addHW()" novalidate> 
-				<div class="form-group">
-					<input type="text" name="hwName" ng-model="addHWCtrl.newHW.hwName" class="form-control" placeholder="Homework Name" required />
-				</div>
-				
-				<div class="form-group">
-					<textarea class="form-control" name="hwDescription" ng-model="addHWCtrl.newHW.hwDescription" placeholder="Homework description"></textarea>
-				</div>
-				
-				 <div class="form-group">
-				 	<input type="number" class="form-control" name="hwDueDate" ng-model="addHWCtrl.newHW.hwDueDate" placeholder="Due date in UNIX timestamp" required />
-				 </div>
-				
-				<input type="submit" class="btn btn-primary btn-block" value="Add!" />
-				
-				<div class="clearfix"></div>
+		<edit-homework></edit-homework>
 
-			</form>
-		</div>
-		<!-- END OF ADD HOMEWORK-->
+		<view-homeworks></view-homeworks>
 		
-		<!-- EDIT HOMEWORK -->
-		<div class="col-sm-12" ng-controller="editHWController as editHWCtrl" ng-show="tab.isSet(4)">
+		<courses></courses>
 		
-			<div class="alert alert-warning" role="alert" ng-init="$valid = true" ng-show="!editHWForm.hwName.$pristine && !editHWForm.hwDueDate.$pristine && !editHWForm.$valid">
-			  <a class="alert-link">Form is invalid!</a>
-			  
-			</div>
-			
-            <!--<div class="alert alert-info alert-warning alert-danger" role="alert">
-			  <a href="#" class="alert-link">...</a>
-			</div>-->
-			<div class="alert" role="alert" ng-show = "editHWCtrl.isSubmitted" ng-class="{'alert-success': editHWCtrl.isSuccessful, 'alert-danger': !editHWCtrl.isSuccessful }">
-			  <h4 href="#" class="alert-link">{{editHWCtrl.msg}}<br/><a class="alert-link" ng-click="tab.setTab(1)">Click here to see your homeworks!</a></h4>
-			</div>
-			
 		
-			<div class="panel panel-primary">
-				<div class="panel-heading"><h3 class="panel-title">HW Preview:</h3></div>
-				<div class="panel-body">
-					<p><strong>Name: </strong>{{ HW.hwName }}</p>
-					<p><strong>Description: </strong>{{ HW.hwDescription }}</p>
-					<p><strong>Due Date: </strong>{{ HW.hwDueDate | date: 'dd/MM/y HH:mm' }}</p>
-				</div>
-			</div>
-
-			<!-- novalidate is for disabling default browshn er HTML5 validation -->
-			<form name="editHWForm"  ng-submit="editHWCtrl.editHW()" novalidate> 
-				<div class="form-group">
-					<input type="text" name="hwName" ng-model="HW.hwName" class="form-control"  required />
-				</div>
-				
-				<div class="form-group">
-					<textarea class="form-control" name="hwDescription" ng-model="HW.hwDescription" ></textarea>
-				</div>
-				
-				 <div class="form-group">
-				 	<input type="text" class="form-control" name="hwDueDate" ng-model="HW.hwDueDate" required />
-				 </div>
-				
-				<div class="checkbox">
-					<label><input type="checkbox" name="hwDone" ng-model="HW.hwDone" />Done?</label>
-				</div>
-
-				<input type="submit" class="btn btn-primary btn-block" value="Update!" />
-
-				<div class="clearfix"></div>
-
-			</form>
-		</div>
-		<!-- END OF EDIT HOMEWORK-->
 	
 		<!-- DENEME -->
-		<div class="col-sm-12 " ng-show="tab.isSet(5)" ng-controller="denemeController as dCtrl" >
+		<div class="col-sm-12 " ng-show="page.isSet(5)" ng-controller="denemeController as dCtrl" >
 		
 			<div class="jumbotron">
 				<h1> deneme</h1>
@@ -257,7 +97,7 @@
 		
 
 	</div>
-	<!-- END OF container div with tab controller -->
+	<!-- END OF container div with page controller -->
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
