@@ -4,6 +4,49 @@
 
 	Parse.initialize("cf86jsjcwXfhr8OkIHl0Viizqtyh3XdfMmRc0Fmr", "kwQA7fHYuwjOLWDMXBJtPATFwKeJwmINGw5GgqT3");
 
+	this.User = Parse.User.extend({
+		// Instance methods
+	    /*getName: function(){ return this.get("hwName"); },
+	    getDescription: function(){ return this.get("hwDescription"); },
+	    isDone: function(){ return this.get("hwDone"); },
+	    getDueDate: function(){ return this.get("hwDueDate"); },
+	    markAs: function(bool){
+	        this.set("hwDone", bool);
+	        this.update(function(bool,msg){});
+	    },*/
+	    signIn: function(){
+	    	console.info("ParseUser extended class' logIn called");
+	    	this.logIn(this.getUsername(), this.getPassword(), {
+	    		success: function(pUser){
+	    			console.log("signIn on success");
+	    			that.user = pUser;
+	    			that.isSuccessful = true;
+	    			that.isSubmitted = true;
+	    			that.msg = "Successfully logged in.";
+	    		},
+	    		error: function(pUser, error){
+	    			console.log("signIn on failure");
+	    			that.isSuccessful = false;
+	    			that.isSubmitted = true;
+	    			that.msg = error.msg;
+	    		}
+			});
+	    }, 	
+	 	// Instance properties go in an initialize method
+	 	initialize: function (attrs, options) {
+		//this.hwName = "Unknown";
+		}
+		}, 
+		{
+		  // Class methods
+		  getById: function(id, callback) {
+				/*new Parse.Query(Homework).equalTo("objectId", id).find({
+					success: function(results){ callback(results[0]); },
+					error: function(error){ console.error("cannot homework getById because: " + error.msg); }
+				});*/
+		  }
+	});
+
 	this.Homework = Parse.Object.extend("fHomework", {
 		// Instance methods
 	    getName: function(){ return this.get("hwName"); },
@@ -70,7 +113,8 @@
 			this.query = queryObj;
 		},
 		load : function(callback){
-			var that = this;
+			var that = this; //this refers to the Homeworks object, so we assign it to "that" in order to make
+								//available for async function calls
 			that.query.find({
 				  success: function(results) {
 						console.log("Successfully retrieved " + results.length + " homework objects.");
@@ -84,7 +128,8 @@
 				  error: function(error) {
 						console.log("Error while loading homeworks: " + error.code + " " + error.message);
 				  }
-			});
+			});	
+
 		}
 	};
     

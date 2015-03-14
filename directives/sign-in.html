@@ -1,0 +1,20 @@
+<div ng-show="page.isSet(page.pageEnum.SIGNIN)" class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-3">
+
+    <div class="alert" role="alert" ng-show = "signInCtrl.isSubmitted" ng-class="{'alert-success': signInCtrl.isSuccessful, 'alert-danger': !signInCtrl.isSuccessful }">
+        <h4 href="#" class="alert-link">{{signInCtrl.msg}} <br/><a class="alert-link" ng-show="signInCtrl.isSuccessful" ng-click="page.setPage(page.pageEnum.DASHBOARD)">Go to dashboard!</a></h4>
+      </div>
+
+    <form class="signInForm"  ng-submit="signInCtrl.signIn()">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input ng-model="signInCtrl.user.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input ng-model="signInCtrl.user.password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>

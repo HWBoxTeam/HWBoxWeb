@@ -2,7 +2,7 @@
 <html ng-app="HWBox">
 	<head>
 		<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
-		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.1/yeti/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.1/spacelab/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="http://jasny.github.io/bootstrap/dist/css/jasny-bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="http://jasny.github.io/bootstrap/examples/navbar-offcanvas/navbar-offcanvas.css">
 
@@ -24,13 +24,13 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	        </button>
-	        <a class="navbar-brand" href="#" ng-click="page.setPage(0)">
+	        <a class="navbar-brand" href="#" ng-click="page.setPage(page.pageEnum.DASHBOARD)">
 		  		<span class="glyphicon glyphicon-book"></span> HWBox
 		  	</a>
         </div>
 
          <div class="navbar-offcanvas offcanvas navmenu-fixed-left">
-          <a class="navmenu-brand" href="#" ng-click="page.setPage(0)" onclick="$('.navbar-header > button').click()">
+          <a class="navmenu-brand" href="#" ng-click="page.setPage(page.pageEnum.DASHBOARD)" onclick="$('.navbar-header > button').click()">
           	<span class="glyphicon glyphicon-book"></span> HWBox
 	  		</a>
           </a>
@@ -43,9 +43,9 @@
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Homeworks <b class="caret"></b></a>
               <ul class="dropdown-menu">
               	<!-- THIS CODE TRICKS THE BROWSER BY TRIGGERING A CLICK EVENT ON TOGGLE-NAVIGATION BUTTON FOR CLOSING SIDEBAR AFTER CLICKING ON A LINK IN SIDEBAR => onclick="$('.navbar-header > button').click()" -->
-                <li ng-class="{ active: page.isSet(1) }"  data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()"><a href="#" ng-click="page.setPage(1)">View Homeworks</a></li>
+                <li ng-class="{ active: page.isSet(page.pageEnum.VIEWHW) }"  data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()"><a href="#" ng-click="page.setPage(page.pageEnum.VIEWHW)">View Homeworks</a></li>
 
-                <li ng-class="{ active: page.isSet(3) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()"><a href="#" ng-click="page.setPage(3)">Add Homework</a></li>
+                <li ng-class="{ active: page.isSet(page.pageEnum.ADDHW) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()"><a href="#" ng-click="page.setPage(page.pageEnum.ADDHW)">Add Homework</a></li>
                 
                 <li onclick="$('.navbar-header > button').click()"><a href="#">Something else here</a></li>
                 <li class="divider"></li>
@@ -55,11 +55,11 @@
               </ul> 
             </li>
 
-                <li ng-class="{ active: page.isSet(2) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()">
-	  				<a href="#" ng-click="page.setPage(2)">View Courses</a>
+                <li ng-class="{ active: page.isSet(page.pageEnum.VIEWCRS) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()">
+	  				<a href="#" ng-click="page.setPage(page.pageEnum.VIEWCRS)">View Courses</a>
 		  		</li>
-		  		<li ng-class="{ active: page.isSet(5) }" data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()">
-		  			<a href="#" ng-click="page.setPage(5)">Deneme</a>
+		  		<li data-toggle="dropdown" data-target=".navbar-offcanvas" data-canvas="body" onclick="$('.navbar-header > button').click()">
+		  			<a href="#" ng-click="">Deneme</a>
 		  		</li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -71,6 +71,8 @@
 	
 	<div class="container-fluid">
 	
+		<sign-in></sign-in>
+
 		<dashboard></dashboard>
 	
 		<add-homework></add-homework>
@@ -80,20 +82,6 @@
 		<view-homeworks></view-homeworks>
 		
 		<courses></courses>
-		
-		
-	
-		<!-- DENEME -->
-		<div class="col-sm-12 " ng-show="page.isSet(5)" ng-controller="denemeController as dCtrl" >
-		
-			<div class="jumbotron">
-				<h1> deneme</h1>
-				<!-- <button class="btn btn-primary" ng-click="dCtrl.control()">Deneme</button>
-				<p>{{ dCtrl.HW }} </p> -->
-			</div>
-		</div>
-		
-		<!-- END OF DENEME -->
 		
 
 	</div>

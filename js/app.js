@@ -1,18 +1,30 @@
 (function(){
 	var app = angular.module('HWBox', ['parse']);
 
+	/*
+		Important note:
+		"this" is a dynamic keyword, depending on the context, it can refer to another scopes.
+		So we assing var that = this to save "this" scope. Also, we can use .bind(this) for forcing
+		the context to not change
+	*/
+
 	app.service('dataService', function() {  
 	  	
 	  	var hws = [];
-	  	
+	  	var currUser = Parse.User.current();
+
 	  	return {
 	  		load: function(callback){
+
+	  			if(!this.currUser) return; //if the user is not logged in don't load any data
+	  			
 	  			Homeworks.setQuery(new Parse.Query(Homework).descending("updatedAt"));
 				console.info("dataService.load() called");
 				Homeworks.load(function(){
 		      		hws = Homeworks.data;	
 		      		callback(); //after loading data do whatever you want with callback() function, e.g. refresh the view		
-				}.bind(this));
+				}.bind(this)); // we are binding "this" because we want to access "hws" variable, otherwise this
+								// anonymous function cannot reach "hws"
 	  		},
 	  		init: function(){
 	  			this.load(function(){});
@@ -29,13 +41,16 @@
 	});
 	
 	app.controller("PageController", function(){
-		this.page = 0;
+		this.pageEnum = { DASHBOARD: 1, SIGNIN: 2, SIGNUP: 3, ADDHW: 4, EDITHW: 5, VIEWHW: 6,
+							ADDCRS: 7, EDITCRS: 8, VIEWCRS: 9 };
+		this.currPage = this.pageEnum.SIGNIN;
+
 		this.setPage = function(pageIndex){
-			this.page = pageIndex;
+			this.currPage = pageIndex;
 			console.log('setPage with' + pageIndex);
 		};
 		this.isSet = function(pageIndex){
-			return this.page === pageIndex;
+			return this.currPage === pageIndex;
 			console.log('isSet with' + pageIndex);
 		};
 	});
@@ -86,6 +101,35 @@
 				};
 			},
 			controllerAs: 'addHWCtrl'
+		};
+	});
+
+	app.directive('signIn', function(){
+		return {
+			restrict: 'E',
+			templateUrl: 'directives/sign-in.html',
+			controller: function($scope){
+				
+				this.user = {};
+				this.user.email = ""; // we are using an email for address for "username"
+				this.user.password = "";
+
+				var isSuccessful = false;
+			    var isSubmitted = false;
+			    var msg;
+
+			    this.signIn = function(){
+			    	console.info("sign in form");
+			    	
+			    	var usr = new User();
+			   		console.info(JSON.stringify(usr));
+			    	usr.set("username", this.user.email);
+			    	usr.set("password", this.user.password);
+			   		
+			   		usr.signIn();
+			    };
+			},
+			controllerAs: 'signInCtrl'
 		};
 	});
 

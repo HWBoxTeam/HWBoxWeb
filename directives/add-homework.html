@@ -1,5 +1,5 @@
 <!-- ADD HOMEWORK -->
-		<div class="col-sm-12" ng-show="page.isSet(3)">
+		<div class="col-sm-12" ng-show="page.isSet(page.pageEnum.ADDHW)">
 		
 			<div class="alert alert-warning" role="alert" ng-init="$valid = true" ng-show="!addHWForm.hwName.$pristine && !addHWForm.hwDueDate.$pristine && !addHWForm.$valid">
 			  <a class="alert-link">Form is invalid!</a>
